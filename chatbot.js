@@ -1,14 +1,10 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 
-// Helper: delay
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 const client = new Client({
-  authStrategy: new LocalAuth({
-    // Opcional: nomeie a pasta de sessão
-    clientId: 'default'
-  }),
+  authStrategy: new LocalAuth({ clientId: 'default' }),
   puppeteer: {
     headless: true,
     args: [
@@ -22,7 +18,6 @@ const client = new Client({
   }
 });
 
-// Mostra QR no terminal (primeiro login)
 client.on('qr', (qr) => {
   console.log('QR RECEIVED');
   qrcode.generate(qr, { small: true });
@@ -38,20 +33,15 @@ client.on('auth_failure', (msg) => {
 
 client.on('disconnected', (reason) => {
   console.error('⚠️ Desconectado:', reason);
-  // Railway reincia o container; você pode optar por client.initialize() aqui
 });
 
 client.on('message', async (msg) => {
   try {
-    if (
-      /(menu|dia|tarde|noite|oi|olá|ola)/i.test(msg.body) &&
-      msg.from.endsWith('@c.us')
-    ) {
+    if (/(menu|dia|tarde|noite|oi|olá|ola)/i.test(msg.body) && msg.from.endsWith('@c.us')) {
       const chat = await msg.getChat();
       const contact = await msg.getContact();
       const firstName = (contact.pushname || 'amigo').split(' ')[0];
 
-      // Seu fluxo de "digitando..." + delays para suavizar cold start
       await delay(3000);
       await chat.sendStateTyping();
       await delay(3000);

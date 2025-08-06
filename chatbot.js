@@ -1,5 +1,6 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+const qrcodeBrowser = require('qrcode');
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -20,7 +21,16 @@ const client = new Client({
 
 client.on('qr', (qr) => {
   console.log('QR RECEIVED');
+  
+  // Opção para terminal (mantida)
   qrcode.generate(qr, { small: true, type: 'terminal' });
+  
+  // Nova opção para navegador (mais limpo)
+  qrcodeBrowser.toDataURL(qr, (err, url) => {
+    if (!err) {
+      console.log(`Acesse este link para escanear no navegador: ${url}`);
+    }
+  });
 });
 
 client.on('ready', () => {

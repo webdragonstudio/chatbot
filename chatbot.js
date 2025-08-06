@@ -8,15 +8,18 @@ const client = new Client({
   authStrategy: new LocalAuth({ clientId: 'default' }),
   puppeteer: {
     headless: true,
+    executablePath: '/usr/bin/chromium',
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
       '--disable-dev-shm-usage',
       '--disable-gpu',
+      '--single-process',
+      '--disable-accelerated-2d-canvas',
+      '--no-first-run',
       '--no-zygote',
-      '--single-process'
-    ]
-  }
+    ],
+  },
 });
 
 client.on('qr', (qr) => {
@@ -72,3 +75,4 @@ client.on('message', async (msg) => {
 });
 
 client.initialize();
+

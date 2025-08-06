@@ -1,7 +1,14 @@
 {
+  "name": "whatsapp-bot",
+  "version": "1.0.0",
+  "main": "chatbot.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node chatbot.js"
+  },
   "dependencies": {
-    "moment-timezone": "^0.5.45",
+    "whatsapp-web.js": "^1.23.0",
     "qrcode-terminal": "^0.12.0",
-    "whatsapp-web.js": "" 
+    "puppeteer": "^22.10.0"
   }
 }

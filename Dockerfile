@@ -1,6 +1,6 @@
 FROM node:18
 
-# Instala as dependências necessárias para o Chromium do Puppeteer
+# Dependências do Chromium necessárias para puppeteer/whatsapp-web.js
 RUN apt-get update && apt-get install -y \
     libgconf-2-4 \
     libatk1.0-0 \
@@ -26,15 +26,9 @@ RUN apt-get update && apt-get install -y \
     libgobject-2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Define a pasta de trabalho
 WORKDIR /app
-
-# Copia package.json e instala dependências
 COPY package*.json ./
 RUN npm install
-
-# Copia o restante do código
 COPY . .
 
-# Comando para iniciar o bot
 CMD ["node", "chatbot.js"]
